@@ -4,8 +4,8 @@
 @import 'prismjs/themes/prism-tomorrow.css';
 
 @theme {
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --font-sans: 'Geist', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Geist Mono', monospace;
 
   --color-brand-50: #f0f9ff;
   --color-brand-100: #e0f2fe;
@@ -23,6 +23,7 @@
 
 html {
   scroll-behavior: smooth;
+  font-size: 18px;
 }
 
 body {
@@ -60,6 +61,8 @@ body {
   @apply prose-a:text-sky-600 prose-a:no-underline hover:prose-a:underline;
   @apply prose-code:text-sky-700 dark:prose-code:text-sky-400;
   @apply prose-code:before:content-none prose-code:after:content-none;
+  @apply prose-code:text-[1.0em];
+  font-family: var(--font-sans);
   @apply prose-pre:bg-[#2d2d2d] prose-pre:rounded-xl;
 }
 
