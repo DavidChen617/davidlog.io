@@ -1,0 +1,78 @@
+{
+  "generatedAt": "2026-04-05T08:51:00.477Z",
+  "groups": [
+    {
+      "titles": {
+        "zh": "後端",
+        "en": "Backend"
+      },
+      "items": [
+        {
+          "path": "backend/csharp-tips",
+          "titles": {
+            "zh": "C# Tips",
+            "en": "C# Tips"
+          }
+        },
+        {
+          "path": "backend/efcore-tips",
+          "titles": {
+            "zh": "EF Core 效能技巧",
+            "en": "EF Core Performance Tips"
+          }
+        },
+        {
+          "path": "backend/redis-patterns",
+          "titles": {
+            "zh": "Redis 快取模式",
+            "en": "Redis Cache Patterns"
+          }
+        },
+        {
+          "path": "backend/sql-performance",
+          "titles": {
+            "zh": "SQL 查詢效能調校",
+            "en": "SQL Query Performance Tuning"
+          }
+        }
+      ]
+    },
+    {
+      "titles": {
+        "zh": "DevOps",
+        "en": "DevOps"
+      },
+      "items": [
+        {
+          "path": "devops/docker-compose",
+          "titles": {
+            "zh": "Docker Compose 實戰筆記",
+            "en": "Docker Compose Field Notes"
+          }
+        },
+        {
+          "path": "devops/kubernetes",
+          "titles": {
+            "zh": "Kubernetes 實戰筆記",
+            "en": "Kubernetes Field Notes"
+          }
+        }
+      ]
+    },
+    {
+      "titles": {
+        "zh": "前端",
+        "en": "Frontend"
+      },
+      "items": [
+        {
+          "path": "frontend/angular-signals",
+          "titles": {
+            "zh": "Angular Signals 實戰",
+            "en": "Angular Signals in Practice"
+          }
+        }
+      ]
+    }
+  ]
+}

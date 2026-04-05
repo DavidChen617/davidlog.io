@@ -1,0 +1,37 @@
+{
+  "nav": {
+    "home": "首頁",
+    "docs": "文件"
+  },
+  "sidebar": {
+    "getting_started": "入門",
+    "backend": "後端",
+    "devops": "DevOps",
+    "frontend": "前端"
+  },
+  "doc": {
+    "loading": "載入中...",
+    "not_found_title": "找不到頁面",
+    "last_updated": "最後更新：",
+    "on_this_page": "本頁目錄"
+  },
+  "home": {
+    "badge": "David Chen 的個人技術筆記",
+    "description": "記錄後端工程、資料庫、DevOps 和 Angular 的實戰筆記。",
+    "browse": "瀏覽筆記 →",
+    "features": {
+      "dotnet_title": "C# / .NET",
+      "dotnet_desc": "深入 .NET 底層、效能調校、設計模式。",
+      "database_title": "資料庫",
+      "database_desc": "SQL Server & PostgreSQL 查詢最佳化、索引策略、Redis 快取。",
+      "devops_title": "DevOps",
+      "devops_desc": "Docker、Kubernetes、CI/CD pipeline 與雲端部署筆記。",
+      "angular_title": "Angular",
+      "angular_desc": "Signals、Standalone 元件、效能模式與實戰技巧。"
+    }
+  },
+  "footer": {
+    "tagline": "個人技術筆記。記錄後端工程、資料庫、DevOps 與 Angular 的實戰經驗，寫給未來的自己看。",
+    "built_with": "使用 Angular 21 + ngx-markdown 建置"
+  }
+}

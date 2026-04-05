@@ -1,0 +1,37 @@
+{
+  "nav": {
+    "home": "Home",
+    "docs": "Docs"
+  },
+  "sidebar": {
+    "getting_started": "Getting Started",
+    "backend": "Backend",
+    "devops": "DevOps",
+    "frontend": "Frontend"
+  },
+  "doc": {
+    "loading": "Loading...",
+    "not_found_title": "Page Not Found",
+    "last_updated": "Last updated: ",
+    "on_this_page": "On this page"
+  },
+  "home": {
+    "badge": "Personal tech notes by David Chen",
+    "description": "Backend engineering, databases, DevOps and Angular — written in the trenches.",
+    "browse": "Browse Notes →",
+    "features": {
+      "dotnet_title": "C# / .NET",
+      "dotnet_desc": "Deep dives into .NET internals, performance tuning, and design patterns.",
+      "database_title": "Database",
+      "database_desc": "SQL Server & PostgreSQL query optimization, indexing strategies, Redis caching.",
+      "devops_title": "DevOps",
+      "devops_desc": "Docker, Kubernetes, CI/CD pipelines and cloud-native deployment notes.",
+      "angular_title": "Angular",
+      "angular_desc": "Signals, standalone components, performance patterns and real-world tips."
+    }
+  },
+  "footer": {
+    "tagline": "Personal tech notes on backend engineering, databases, DevOps, and Angular, written for my future self.",
+    "built_with": "Built with Angular 21 + ngx-markdown"
+  }
+}

@@ -2,7 +2,8 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "cli": {
-    "packageManager": "pnpm"
+    "packageManager": "pnpm",
+    "analytics": "0b046d58-3b0d-4fa7-b02c-8109e568bf2f"
   },
   "newProjectRoot": "projects",
   "projects": {
@@ -50,17 +51,26 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles.css"
-            ]
+            "scripts": [
+              "node_modules/prismjs/prism.js",
+              "node_modules/prismjs/components/prism-clike.min.js",
+              "node_modules/prismjs/components/prism-javascript.min.js",
+              "node_modules/prismjs/components/prism-typescript.min.js",
+              "node_modules/prismjs/components/prism-bash.min.js",
+              "node_modules/prismjs/components/prism-csharp.min.js",
+              "node_modules/prismjs/components/prism-sql.min.js",
+              "node_modules/prismjs/components/prism-yaml.min.js",
+              "node_modules/mermaid/dist/mermaid.min.js"
+            ],
+            "styles": ["src/styles.css"]
           },
           "configurations": {
             "production": {
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "2MB",
+                  "maximumError": "5MB"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -68,6 +78,10 @@
                   "maximumError": "8kB"
                 }
               ],
+              "outputHashing": "all"
+            },
+            "github-pages": {
+              "baseHref": "/davidlog.io/",
               "outputHashing": "all"
             },
             "development": {
@@ -83,6 +97,9 @@
           "configurations": {
             "production": {
               "buildTarget": "davidlog.io:build:production"
+            },
+            "github-pages": {
+              "buildTarget": "davidlog.io:build:github-pages"
             },
             "development": {
               "buildTarget": "davidlog.io:build:development"

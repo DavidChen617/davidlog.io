@@ -1,3 +1,75 @@
-/* You can add global styles to this file, and also import other style files */
-
 @import 'tailwindcss';
+@plugin "@tailwindcss/typography";
+@custom-variant dark (&:where(.dark, .dark *));
+@import 'prismjs/themes/prism-tomorrow.css';
+
+@theme {
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  --color-brand-50: #f0f9ff;
+  --color-brand-100: #e0f2fe;
+  --color-brand-500: #0ea5e9;
+  --color-brand-600: #0284c7;
+  --color-brand-700: #0369a1;
+
+  /* Dark mode — neutral black, no blue tint (like code.claude.com) */
+  --color-dark-bg:      #0d0d0d;   /* main background */
+  --color-dark-surface: #141414;   /* navbar / sidebar */
+  --color-dark-border:  #222222;   /* borders */
+  --color-dark-text:    #e8e8e8;   /* primary text */
+  --color-dark-muted:   #888888;   /* muted / secondary text */
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-white text-slate-900 dark:text-dark-text;
+  font-family: var(--font-sans);
+  background-color: #ffffff;
+}
+
+.dark body {
+  background-color: #0d0d0d;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse 90% 55% at 50% -5%,  rgba(14, 165, 233, 0.28) 0%, transparent 60%),
+    radial-gradient(ellipse 55% 45% at 92% 88%,  rgba(139, 92, 246, 0.22) 0%, transparent 58%),
+    radial-gradient(ellipse 50% 40% at 4%  80%,  rgba(20, 184, 166, 0.18) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 30% at 75% 40%,  rgba(99,  102, 241, 0.10) 0%, transparent 50%);
+  background-attachment: fixed, fixed, fixed, fixed, fixed;
+}
+
+/* Sidebar scrollbar */
+.sidebar-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.sidebar-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.sidebar-scroll::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 dark:bg-slate-600 rounded-full;
+}
+
+/* Markdown content */
+.markdown-body {
+  @apply prose prose-slate dark:prose-invert max-w-none;
+  @apply prose-headings:font-semibold;
+  @apply prose-a:text-sky-600 prose-a:no-underline hover:prose-a:underline;
+  @apply prose-code:text-sky-700 dark:prose-code:text-sky-400;
+  @apply prose-code:before:content-none prose-code:after:content-none;
+  @apply prose-pre:bg-[#2d2d2d] prose-pre:rounded-xl;
+}
+
+/* Prism overrides */
+.markdown-body pre[class*='language-'] {
+  margin: 0;
+  border-radius: 0.75rem;
+}
+
+/* Active TOC link */
+.toc-link-active {
+  @apply text-sky-600 dark:text-sky-400 font-medium;
+}
