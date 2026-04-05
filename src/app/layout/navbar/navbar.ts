@@ -11,7 +11,7 @@ import { socialLinks } from '../../shared/social-links';
   imports: [RouterLink, RouterLinkActive, TranslatePipe],
   template: `
     <header class="fixed top-0 left-0 right-0 z-50 h-14 border-b border-slate-200 dark:border-dark-border bg-white/90 dark:bg-dark-surface/90 backdrop-blur-sm">
-      <div class="flex h-full items-center px-6 gap-6">
+      <div class="flex h-full items-center px-3 sm:px-6 gap-2 sm:gap-6">
         <!-- Logo -->
         <a routerLink="/" class="flex items-center gap-1.5 shrink-0">
           <span class="text-sky-600 dark:text-sky-400 font-bold text-lg">david</span>
@@ -19,26 +19,26 @@ import { socialLinks } from '../../shared/social-links';
         </a>
 
         <!-- Nav links -->
-        <nav class="flex items-center gap-1">
+        <nav class="flex items-center gap-0.5 sm:gap-1 min-w-0">
           @for (item of navItems; track item.link) {
             <a
               [routerLink]="item.link"
               routerLinkActive="text-sky-600 dark:text-sky-400"
               [routerLinkActiveOptions]="{ exact: item.link === '/' }"
-              class="px-3 py-1.5 text-sm rounded-md text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-dark-border transition-colors"
+              class="px-2 sm:px-3 py-1.5 text-xs sm:text-sm rounded-md text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-dark-border transition-colors whitespace-nowrap"
             >
               {{ item.labelKey | translate }}
             </a>
           }
         </nav>
 
-        <div class="ml-auto flex items-center gap-1">
+        <div class="ml-auto flex items-center gap-0.5 sm:gap-1 shrink-0">
           <!-- GitHub -->
           <a
             [href]="socialLinks.github.href"
             target="_blank"
             rel="noopener"
-            class="p-2 rounded-md text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-dark-border transition-colors"
+            class="hidden min-[492px]:block p-2 rounded-md text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-dark-border transition-colors"
             aria-label="GitHub"
           >
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -50,7 +50,7 @@ import { socialLinks } from '../../shared/social-links';
             [href]="socialLinks.linkedin.href"
             target="_blank"
             rel="noopener"
-            class="p-2 rounded-md text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-dark-border transition-colors"
+            class="hidden min-[492px]:block p-2 rounded-md text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-dark-border transition-colors"
             aria-label="LinkedIn"
           >
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -62,7 +62,7 @@ import { socialLinks } from '../../shared/social-links';
             [href]="socialLinks.x.href"
             target="_blank"
             rel="noopener"
-            class="p-2 rounded-md text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-dark-border transition-colors"
+            class="hidden min-[492px]:block p-2 rounded-md text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-dark-border transition-colors"
             aria-label="X"
           >
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -73,7 +73,7 @@ import { socialLinks } from '../../shared/social-links';
           <!-- Language toggle -->
           <button
             (click)="lang.toggle()"
-            class="px-2.5 py-1 rounded-md text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-dark-border transition-colors min-w-[2.5rem] text-center"
+            class="px-2 sm:px-2.5 py-1 rounded-md text-xs sm:text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-dark-border transition-colors min-w-[2.25rem] sm:min-w-[2.5rem] text-center"
             aria-label="Switch language"
           >
             {{ lang.current() === 'zh' ? 'EN' : '中' }}

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DocsManifestService } from '../../shared/docs-manifest.service';
 import { LangService } from '../../shared/lang.service';
@@ -22,7 +22,7 @@ const CATEGORY_ICONS: Record<string, string> = {
           {{ lang.current() === 'zh' ? '所有筆記' : 'All Notes' }}
         </h1>
         <p class="text-sm text-slate-400 dark:text-dark-muted mb-10">
-          {{ manifest.groups().flatMap(g => g.items).length }}
+          {{ totalArticles() }}
           {{ lang.current() === 'zh' ? ' 篇' : ' articles' }}
         </p>
 
@@ -58,6 +58,9 @@ const CATEGORY_ICONS: Record<string, string> = {
 export class BrowseComponent {
   protected readonly manifest = inject(DocsManifestService);
   protected readonly lang = inject(LangService);
+  protected readonly totalArticles = computed(() =>
+    this.manifest.groups().reduce((total, group) => total + group.items.length, 0)
+  );
 
   protected icon(label: string): string {
     return CATEGORY_ICONS[label] ?? '📝';
