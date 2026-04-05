@@ -90,7 +90,7 @@ async function main() {
   const enDir = join(DOCS_ROOT, 'en');
 
   const groups = await scanDir(zhDir, enDir);
-  const manifest = { generatedAt: new Date().toISOString(), groups };
+  const manifest = { groups };
   const outPath = join(DOCS_ROOT, 'manifest.json');
 
   await writeFile(outPath, JSON.stringify(manifest, null, 2), 'utf-8');

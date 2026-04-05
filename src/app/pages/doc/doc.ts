@@ -1,5 +1,6 @@
 import {
   Component,
+  computed,
   inject,
   signal,
   OnInit,
@@ -15,6 +16,7 @@ import { HttpClient } from '@angular/common/http';
 import { catchError, combineLatest, of, Subscription } from 'rxjs';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { LangService } from '../../shared/lang.service';
+import { DarkModeService } from '../../shared/dark-mode.service';
 
 interface TocItem {
   id: string;
@@ -48,7 +50,7 @@ interface TocItem {
             </div>
           } @else {
             <div #contentEl>
-              <markdown class="markdown-body" [data]="content()" mermaid (ready)="onReady()" />
+              <markdown class="markdown-body" [data]="content()" mermaid [mermaidOptions]="mermaidOpts()" (ready)="onReady()" />
             </div>
 
             <div class="mt-12 pt-6 border-t border-slate-200 dark:border-dark-border text-sm">
@@ -91,6 +93,11 @@ export class DocComponent implements OnInit, AfterViewInit, OnDestroy {
   private readonly route = inject(ActivatedRoute);
   private readonly http = inject(HttpClient);
   private readonly lang = inject(LangService);
+  private readonly darkMode = inject(DarkModeService);
+
+  protected readonly mermaidOpts = computed(() =>
+    ({ theme: (this.darkMode.isDark() ? 'dark' : 'default') as 'dark' | 'default' })
+  );
 
   protected readonly content = signal('');
   protected readonly loading = signal(true);
