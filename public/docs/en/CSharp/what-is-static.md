@@ -1,51 +1,51 @@
-# 什麼是 static
+# What is static
 
-## 基本特性
+## Basic Characteristics
 
-- `static` 類別無法實例化。
-- `static` 不能被繼承，本質上是 `abstract sealed`。
-- `static constructor` 不能使用 access modifier，以及不包含參數。
-- 類別或結構只能有一個靜態建構函式。
-- 靜態建構函式無法繼承或多載。
-- 無法直接呼叫靜態建構函式，而是由通用語言執行平台 (CLR) 呼叫的。
-- `static` 成員屬於類型本身，不屬於任何實例。
+- A `static` class cannot be instantiated .
+- A `static` class cannot be inherited — it is essentially `abstract sealed` .
+- A `static constructor` cannot have an access modifier and takes no parameters .
+- A class or struct can only have one static constructor .
+- Static constructors cannot be inherited or overloaded .
+- Static constructors cannot be called directly — they are invoked by the Common Language Runtime (CLR) .
+- `static` members belong to the type itself, not to any instance .
 
 ---
 
-<h2>靜態初始化時機：<a href="https://csharpindepth.com/Articles/BeforeFieldInit" target="_blank"
+<h2>Static Initialization Timing: <a href="https://csharpindepth.com/Articles/BeforeFieldInit" target="_blank"
   rel="noopener noreferrer">beforefieldinit</a></h2>
 
-CLR 在 IL 層級會根據類別是否有靜態建構子，產生不同的初始化策略。
+At the IL level, the CLR applies different initialization strategies depending on whether a class has a static constructor.
 
-### 沒有靜態建構子
+### Without a Static Constructor
 
 ```il
 .class public auto ansi beforefieldinit
   Lab1.InstanceClass2
 ```
 
-有 `beforefieldinit` flag，CLR 可以在**第一次存取靜態成員之前的任意時間點**提早初始化，JIT 最佳化空間較大。
+With the `beforefieldinit` flag, the CLR is free to initialize the type **at any point before the first access to a static member**, giving the JIT more room for optimization.
 
-### 有靜態建構子
+### With a Static Constructor
 
 ```il
 .class public auto ansi
   Lab1.InstanceClass1
 ```
 
-沒有 `beforefieldinit` flag，CLR 必須**嚴格在第一次存取靜態成員前的瞬間**才初始化。
+Without the `beforefieldinit` flag, the CLR must initialize the type **strictly at the moment just before the first access to a static member**.
 
-| 情況 | `beforefieldinit` | 初始化時機 | JIT 最佳化 |
+| Case | `beforefieldinit` | Initialization Timing | JIT Optimization |
 |---|---|---|---|
-| 無靜態建構子 | 有 | 寬鬆，CLR 自由決定 | 較好 |
-| 有靜態建構子 | 無 | 嚴格，第一次存取前瞬間 | 受限 |
+| No static constructor | Yes | Relaxed — CLR decides freely | Better |
+| Has static constructor | No | Strict — just before first access | Limited |
 
 
 ---
 
-## 靜態欄位初始化器 vs 靜態建構子的執行順序例外
+## Execution Order Exception: Static Field Initializers vs. Static Constructors
 
-通常的規則是：靜態建構子在任何實例建立之前執行。
+The general rule is: a static constructor runs before any instance is created.
 
 ```CSharp
 public class InstanceClass  
@@ -61,19 +61,19 @@ public class InstanceClass
 }
 ```
 
-執行順序：
+Execution order:
 
 ```
 InstanceClass: static constructor
 InstanceClass: instance constructor
 ```
 
-**但有一個例外：如果靜態欄位初始化器本身建立了該類型的實例，實例建構子會先執行，靜態建構子反而後執行。**
+**However, there is one exception: if a static field initializer creates an instance of that same type, the instance constructor runs first, and the static constructor runs afterward.**
 
 ```csharp
 public class Singleton
 {
-    // 靜態欄位初始化器呼叫了實例建構子
+    // Static field initializer calls the instance constructor
     private static Singleton _instance = new Singleton();
 
     private Singleton()
@@ -90,7 +90,7 @@ public class Singleton
 }
 ```
 
-執行順序：
+Execution order:
 
 ```
 Singleton: Execute instance constructor
@@ -99,11 +99,11 @@ Singleton: Execute static constructor
 
 ---
 
-## 靜態建構子的注意事項
+## Caveats for Static Constructors
 
-### 例外無法恢復
+### Exceptions Are Unrecoverable
 
-如果靜態建構子（或靜態欄位初始化器）拋出例外，該類型會被標記為初始化失敗。後續任何存取都會拋出 `TypeInitializationException`，且**無法恢復**。
+If a static constructor (or static field initializer) throws an exception, the type is marked as failed to initialize. Every subsequent access will throw a `TypeInitializationException`, and this state **cannot be recovered**.
 
 ```csharp
 public class BrokenClass
@@ -130,16 +130,16 @@ for (int i = 1; i <= 3; i++)
 }
 ```
 
-執行結果：
+Output:
 
 ```
-BrokenClass: static constructor running...   # 只跑一次
+BrokenClass: static constructor running...   # runs only once
 [Attempt 1] TypeInitializationException: Static constructor failed!
-[Attempt 2] TypeInitializationException: Static constructor failed!   # .cctor 沒有再跑
-[Attempt 3] TypeInitializationException: Static constructor failed!   # 但還是繼續炸
+[Attempt 2] TypeInitializationException: Static constructor failed!   # .cctor does not run again
+[Attempt 3] TypeInitializationException: Static constructor failed!   # but it keeps throwing
 ```
 
-用 `dotnet-dump` 可以在 heap 上驗證：
+You can verify this on the heap with `dotnet-dump`:
 
 ```
 > name2ee Lab1.dll Lab1.BrokenClass
@@ -152,7 +152,7 @@ MethodTable: 0000000108c6f7c0
 Statistics:
           MT Count TotalSize Class Name
 000108c6d630     1       128 System.TypeInitializationException
-Total 1 objects, 128 bytes   ← 只有 1 個，CLR 緩存了這個例外物件
+Total 1 objects, 128 bytes   ← only 1 object — CLR cached this exception
 
 > printexception 00000003000146f0
 Exception object: 00000003000146f0
@@ -170,14 +170,14 @@ Exception object: 0000000300014630
 Exception type:   System.Exception
 Message:          Static constructor failed!
 StackTrace (generated):
-    Lab1.dll!Lab1.BrokenClass..cctor()   ← .cctor 是靜態建構子的 IL 名稱
+    Lab1.dll!Lab1.BrokenClass..cctor()   ← .cctor is the IL name for a static constructor
 ```
 
-CLR 把原始例外緩存在 heap 上，後續存取直接拿緩存物件重新包成 `TypeInitializationException` 拋出，靜態建構子不會再跑。這個狀態在 AppDomain 的生命週期內無法重置。
+The CLR caches the original exception on the heap. On subsequent accesses, it reuses the cached object and wraps it in a new `TypeInitializationException` — the static constructor never runs again. This state cannot be reset within the AppDomain's lifetime.
 
-### 執行緒安全
+### Thread Safety
 
-CLR 保證靜態初始化只執行一次，即使多執行緒同時存取也不會重複初始化。
+The CLR guarantees that static initialization runs exactly once, even when multiple threads access the type simultaneously.
 
 ```csharp
 new Thread(delegate()
@@ -193,7 +193,7 @@ new Thread(delegate()
 }).Start();
 ```
 
-執行結果：
+Output:
 
 ```
 Singleton: Execute Instance constructor
@@ -202,9 +202,9 @@ Singleton: Execute Static constructor
 [Thread 4] HashCode: 4032828
 ```
 
-兩條執行緒的 HashCode 相同，代表拿到的是同一個實例，且初始化訊息只出現一次。
+Both threads share the same `HashCode`, confirming they received the same instance, and the initialization messages appear only once.
 
-## 參考資料
+## References
 
 - [Static Classes and Static Class Members - Microsoft Learn](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/static-classes-and-static-class-members)
 - [Static Constructors - Microsoft Learn](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/static-constructors)
