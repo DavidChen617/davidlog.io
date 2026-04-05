@@ -38,6 +38,21 @@
     },
     {
       "titles": {
+        "zh": "C#",
+        "en": "CSharp"
+      },
+      "items": [
+        {
+          "path": "CSharp/what-is-static",
+          "titles": {
+            "zh": "什麼是 static",
+            "en": "What is static"
+          }
+        }
+      ]
+    },
+    {
+      "titles": {
         "zh": "DevOps",
         "en": "DevOps"
       },
