@@ -4,7 +4,7 @@
  * Run: node scripts/gen-manifest.mjs
  */
 
-import { readdir, readFile, writeFile } from 'fs/promises';
+import { readdir, readFile, stat, writeFile } from 'fs/promises';
 import { join, basename } from 'path';
 import { existsSync } from 'fs';
 import { fileURLToPath } from 'url';
@@ -40,6 +40,11 @@ async function readMeta(zhDir, enDir) {
   return { zh, en };
 }
 
+async function readUpdatedAt(filePath) {
+  const fileStat = await stat(filePath);
+  return fileStat.mtime.toISOString();
+}
+
 async function scanDir(zhDir, enDir, baseDocPath = '') {
   const entries = await readdir(zhDir, { withFileTypes: true });
 
@@ -71,10 +76,16 @@ async function scanDir(zhDir, enDir, baseDocPath = '') {
       const docPath = `${subDocPath}/${slug}`;
 
       const zhTitle = await readTitle(join(zhSubDir, file.name));
+      const zhUpdatedAt = await readUpdatedAt(join(zhSubDir, file.name));
       const enPath = join(enSubDir, file.name);
       const enTitle = existsSync(enPath) ? await readTitle(enPath) : zhTitle;
+      const enUpdatedAt = existsSync(enPath) ? await readUpdatedAt(enPath) : zhUpdatedAt;
 
-      items.push({ path: docPath, titles: { zh: zhTitle, en: enTitle } });
+      items.push({
+        path: docPath,
+        titles: { zh: zhTitle, en: enTitle },
+        updatedAt: { zh: zhUpdatedAt, en: enUpdatedAt },
+      });
     }
 
     if (items.length > 0) {
@@ -90,7 +101,7 @@ async function main() {
   const enDir = join(DOCS_ROOT, 'en');
 
   const groups = await scanDir(zhDir, enDir);
-  const manifest = { groups };
+  const manifest = { generatedAt: new Date().toISOString(), groups };
   const outPath = join(DOCS_ROOT, 'manifest.json');
 
   await writeFile(outPath, JSON.stringify(manifest, null, 2), 'utf-8');

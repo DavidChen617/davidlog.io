@@ -5,6 +5,7 @@ import { LangService, Lang } from './lang.service';
 export interface ManifestItem {
   path: string;
   titles: Record<Lang, string>;
+  updatedAt: Record<Lang, string>;
 }
 
 export interface ManifestGroup {
@@ -36,6 +37,18 @@ export class DocsManifestService {
       })),
     }));
   });
+
+  findItem(path: string) {
+    const manifest = this.manifest();
+    if (!manifest) return null;
+
+    for (const group of manifest.groups) {
+      const item = group.items.find((entry) => entry.path === path);
+      if (item) return item;
+    }
+
+    return null;
+  }
 
   load() {
     this.http.get<Manifest>('docs/manifest.json').subscribe((m) => this.manifest.set(m));

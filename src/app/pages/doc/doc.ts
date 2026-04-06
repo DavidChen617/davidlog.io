@@ -17,6 +17,7 @@ import { catchError, combineLatest, of, Subscription } from 'rxjs';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { LangService } from '../../shared/lang.service';
 import { DarkModeService } from '../../shared/dark-mode.service';
+import { DocsManifestService } from '../../shared/docs-manifest.service';
 
 interface TocItem {
   id: string;
@@ -53,11 +54,13 @@ interface TocItem {
               <markdown class="markdown-body" [data]="content()" mermaid [mermaidOptions]="mermaidOpts()" (ready)="onReady()" />
             </div>
 
-            <div class="mt-12 pt-6 border-t border-slate-200 dark:border-dark-border text-sm">
-              <span class="text-slate-400 dark:text-slate-500 italic">
-                {{ 'doc.last_updated' | translate }}{{ lastUpdated() }}
-              </span>
-            </div>
+            @if (lastUpdated()) {
+              <div class="mt-12 pt-6 border-t border-slate-200 dark:border-dark-border text-sm">
+                <span class="text-slate-400 dark:text-slate-500 italic">
+                  {{ 'doc.last_updated' | translate }}{{ lastUpdated() }}
+                </span>
+              </div>
+            }
           }
         </div>
       </main>
@@ -94,6 +97,7 @@ export class DocComponent implements OnInit, AfterViewInit, OnDestroy {
   private readonly http = inject(HttpClient);
   private readonly lang = inject(LangService);
   private readonly darkMode = inject(DarkModeService);
+  private readonly docsManifest = inject(DocsManifestService);
 
   protected readonly mermaidOpts = computed(() =>
     ({ theme: (this.darkMode.isDark() ? 'dark' : 'default') as 'dark' | 'default' })
@@ -104,9 +108,20 @@ export class DocComponent implements OnInit, AfterViewInit, OnDestroy {
   protected readonly error = signal('');
   protected readonly toc = signal<TocItem[]>([]);
   protected readonly activeId = signal('');
-  protected readonly lastUpdated = signal(
-    new Date().toLocaleDateString('zh-TW', { year: 'numeric', month: 'long', day: 'numeric' })
-  );
+  protected readonly lastUpdated = computed(() => {
+    const currentLang = this.lang.current();
+    const item = this.docsManifest.findItem(this.docPath());
+    const updatedAt = item?.updatedAt[currentLang] ?? item?.updatedAt.zh;
+
+    if (!updatedAt) return '';
+
+    const locale = currentLang === 'en' ? 'en-US' : 'zh-TW';
+    return new Date(updatedAt).toLocaleDateString(locale, {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  });
 
   private readonly docPath = signal('intro');
   private readonly lang$ = toObservable(this.lang.current);
