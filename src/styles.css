@@ -72,6 +72,11 @@ body {
   border-radius: 0.75rem;
 }
 
+/* Keep consecutive fenced code blocks visually separated. */
+.markdown-body pre[class*='language-'] + pre[class*='language-'] {
+  margin-top: 1rem;
+}
+
 /* Active TOC link */
 .toc-link-active {
   @apply text-sky-600 dark:text-sky-400 font-medium;
