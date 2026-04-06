@@ -50,6 +50,13 @@
           }
         },
         {
+          "path": "CSharp/what-is-ienumerable",
+          "titles": {
+            "zh": "什麼是 IEnumerable",
+            "en": "What is IEnumerable"
+          }
+        },
+        {
           "path": "CSharp/what-is-static",
           "titles": {
             "zh": "什麼是 static",
