@@ -43,6 +43,13 @@
       },
       "items": [
         {
+          "path": "CSharp/what-is-const",
+          "titles": {
+            "zh": "什麼是 const",
+            "en": "What is const"
+          }
+        },
+        {
           "path": "CSharp/what-is-static",
           "titles": {
             "zh": "什麼是 static",
